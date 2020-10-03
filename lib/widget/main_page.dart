@@ -1,32 +1,41 @@
-import 'package:change_notifier_sampler/pet/model/pet_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import 'detail_page.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  String selectedValue = '飼っているペットを選んでください';
+  @override
   @override
   Widget build(BuildContext context) {
-    final petModel = Provider.of<PetViewModel>(context);
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('ChangeNotifierSampler'),
+        title: Text('Stateful Sampler'),
       ),
       body: Column(
         children: [
-          Text(petModel.selectedValue),
+          Text(selectedValue),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               RaisedButton(
-                child: Text('🐱'),
-                onPressed: () => petModel.changeValueToCat(),
-              ),
+                  child: Text('🐱'),
+                  onPressed: () {
+                    setState(() {
+                      selectedValue = 'ねこ🐱';
+                    });
+                  }),
               RaisedButton(
-                child: Text('🐶'),
-                onPressed: () => petModel.changeValueToDog(),
-              ),
+                  child: Text('🐶'),
+                  onPressed: () {
+                    setState(() {
+                      selectedValue = 'いぬ🐶';
+                    });
+                  }),
             ],
           ),
           FlatButton(
@@ -38,7 +47,9 @@ class MainPage extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) {
-                  return DetailPage();
+                  return DetailPage(
+                    selectedValue: selectedValue,
+                  );
                 },
               ),
             ),
